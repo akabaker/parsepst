@@ -1,10 +1,9 @@
 #!/usr/bin/env python
-
 import re
-import subprocess
-import operator
+from sys import exit
+
 infile = '/home/bakerlu/pst_output/2011'
-words = ['no', 'can\'t', 'unable', 'sorry', 'apologies']
+words = ['can\'t', 'unable', 'sorry', 'apologies', 'AIR', 'failure']
 regex = re.compile(r'%s' % '|'.join(words))
 
 def parse(file):
@@ -14,25 +13,30 @@ def parse(file):
 	match = regex.findall(out)
 	matches = {}
 	for word in words:
-		#print '%s,%d' % (word,match.count(word))
 		matches[word] = match.count(word)
+
+	if sum(matches.values()) == 0:
+		raise ValueError('Result set is empty')
+	else:
+		return matches
+
+def classify(result_dict):
+	#CSS font sizes
+	font_sizes = [10,20,30]
+	max_num = max(result_dict.values())
+	#Interval
+	step = max_num / len(range(0,2))
+
+	for word, count in result_dict.items():
+		font_size_index = count / step
+		print '<p style="font-size:%dpx">%s - %d</p>' % (font_sizes[font_size_index], word, count)
+		#print '<p style="font-size:%dpx">%s</p>' % (font_sizes[font_size_index], word)
 	
-
-def classify(result_list):
-	largest = 50
-	large = 35
-	medium = 25
-	small = 10
-
-	#Sort the list of tuples by the second key in the tuple, (numeric value)
-	sorted_words = sorted(result_list, key=operator.itemgetter(1))
-	sorted_words_len = len(sorted_words)
-
-	#for i in xrange(sorted_words_len):
-	#	print sorted_words.pop()
-	largest_word, largest_value = sorted_words[-1:][0]
-
 if __name__ == '__main__':
-	#parse(infile)
-	words_n_counts = [('apologies',32), ('sorry', 74), ('unable', 181), ("can't", 107), ('no', 39884)]
-	classify(words_n_counts)
+	try:
+		matches = parse(infile)
+	except ValueError, error:
+		print error
+		exit(1)
+
+	classify(matches)
