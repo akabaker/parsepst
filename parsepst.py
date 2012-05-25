@@ -1,9 +1,15 @@
 #!/usr/bin/env python
 import re
+import json
 from sys import exit
 
 infile = '/home/bakerlu/pst_output/2011'
-words = ['can\'t', 'unable', 'sorry', 'apologies', 'AIR', 'failure']
+
+def load(file):
+	with open(file, 'r') as f:
+		return json.loads(f.read())
+
+words = load('words.json')
 regex = re.compile(r'%s' % '|'.join(words))
 
 def parse(file):
@@ -24,6 +30,7 @@ def classify(result_dict):
 	#CSS font sizes
 	font_sizes = [10,20,30]
 	max_num = max(result_dict.values())
+
 	#Interval
 	step = max_num / len(range(0,2))
 

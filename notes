@@ -2,3 +2,4 @@
 #read_pst('/home/bakerlu/2011.pst', '/home/bakerlu/pst_out2')
 #def read_pst(pstfile, outdir):
 #	subprocess.Popen('readpst %s -o %s' % (pstfile, outdir), shell=True, stdout=subprocess.PIPE).communicate()	
+#words = ['can\'t', 'unable', 'sorry', 'apologies', 'AIR', 'failure','sandwiches', 'tired', 'cheese', 'incident', 'tried', ]
