@@ -2,6 +2,7 @@ ParsePST
 --------
 
 1. Convert your PST to an mbox format use the Linux utility "readpst".
+
 	- yum install libpst
 	- readpst <pst file> -o <output dir>
 
